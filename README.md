@@ -1,17 +1,18 @@
 <div class="filament-hidden">
 
-![FilaKit](https://raw.githubusercontent.com/jeffersongoncalves/filakitv5/main/art/jeffersongoncalves-filakitv5.png)
+![UsPrivacyKit](https://raw.githubusercontent.com/jeffersongoncalves/usprivacykitv5/main/art/jeffersongoncalves-usprivacykitv5.png)
 
 </div>
 
-# FilaKit Start Kit Filament 5.x and Laravel 13.x
+# UsPrivacyKit Start Kit Filament 5.x and Laravel 13.x
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
 
-## About FilaKit
+## About UsPrivacyKit
 
-FilaKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
-web applications with a ready-to-use multi-panel structure.
+UsPrivacyKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
+web applications with a ready-to-use multi-panel structure and the US Privacy privacy suite already installed: the tooling for
+the US state privacy laws, managed from the Admin panel.
 
 ## Features
 
@@ -21,7 +22,8 @@ web applications with a ready-to-use multi-panel structure.
     - Admin Panel (`/admin`) - For system administrators
     - App Panel (`/app`) - For authenticated application users
     - Public Panel (frontend interface) - For visitors
-- **Environment Configuration** - Centralized configuration through the `config/filakit.php` file
+- **US Privacy privacy suite** - every `laravel-us-privacy*` package and its `filament-us-privacy*` plugin (3.x), wired into the Admin panel
+- **Environment Configuration** - Centralized configuration through the `config/usprivacykit.php` file
 
 ## System Requirements
 
@@ -33,7 +35,7 @@ web applications with a ready-to-use multi-panel structure.
 
 Clone the repository
 ``` bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/usprivacykitv5 --database=mysql
 ```
 
 ### Using FilaKit CLI
@@ -41,14 +43,14 @@ laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
 Or use [FilaKit CLI](https://github.com/jeffersongoncalves/filakit-cli) for a simplified setup:
 
 ```bash
-filakit new my-app --kit=jeffersongoncalves/filakitv5
+filakit new my-app --kit=jeffersongoncalves/usprivacykitv5
 ```
 
 > Install FilaKit CLI: `composer global require jeffersongoncalves/filakit-cli`
 
 ###  Easy Installation
 
-FilaKit can be easily installed using the following command:
+UsPrivacyKit can be easily installed using the following command:
 
 ```bash
 php install.php
@@ -99,7 +101,7 @@ php artisan serve
 
 Clone the repository
 ```bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/usprivacykitv5 --database=mysql
 ```
 
 Move into the project directory
@@ -154,9 +156,32 @@ Install JavaScript dependencies
 pnpm install
 ```
 
+## US Privacy privacy suite
+
+The kit ships the whole US Privacy suite for the US state privacy laws:
+
+| Package | Filament plugin |
+|---|---|
+| [laravel-us-privacy](https://github.com/jeffersongoncalves/laravel-us-privacy) | [filament-us-privacy](https://github.com/jeffersongoncalves/filament-us-privacy) |
+| [laravel-us-privacy-opt-out](https://github.com/jeffersongoncalves/laravel-us-privacy-opt-out) | [filament-us-privacy-opt-out](https://github.com/jeffersongoncalves/filament-us-privacy-opt-out) |
+| [laravel-us-privacy-requests](https://github.com/jeffersongoncalves/laravel-us-privacy-requests) | [filament-us-privacy-requests](https://github.com/jeffersongoncalves/filament-us-privacy-requests) |
+| [laravel-us-privacy-notices](https://github.com/jeffersongoncalves/laravel-us-privacy-notices) | [filament-us-privacy-notices](https://github.com/jeffersongoncalves/filament-us-privacy-notices) |
+| [laravel-us-privacy-assessments](https://github.com/jeffersongoncalves/laravel-us-privacy-assessments) | [filament-us-privacy-assessments](https://github.com/jeffersongoncalves/filament-us-privacy-assessments) |
+| [laravel-us-privacy-vendors](https://github.com/jeffersongoncalves/laravel-us-privacy-vendors) | [filament-us-privacy-vendors](https://github.com/jeffersongoncalves/filament-us-privacy-vendors) |
+| [laravel-us-privacy-minors](https://github.com/jeffersongoncalves/laravel-us-privacy-minors) | [filament-us-privacy-minors](https://github.com/jeffersongoncalves/filament-us-privacy-minors) |
+
+- `App\Models\User` is the data subject: it implements `HasPersonalData` and declares its `name` and `email` with `#[PersonalData]`.
+  Declare every personal column you add, on this model and on your own models, and list those models in `config/us-privacy.php`.
+- The migrations are already in `database/migrations`: `php artisan migrate` creates every table of the suite.
+- Every plugin is registered in `app/Providers/Filament/AdminPanelProvider.php`, under the **US Privacy** navigation group.
+- `tests/Feature/UsPrivacySuiteTest.php` checks the declarations and opens every page of the suite.
+
+Each package's README explains its configuration, events and scheduled commands. The suite gives you tooling: it does not make
+you compliant on its own, you still need legal review.
+
 ## Authentication Structure
 
-FilaKit comes pre-configured with a custom authentication system that supports different types of users:
+UsPrivacyKit comes pre-configured with a custom authentication system that supports different types of users:
 
 - `Admin` - For administrative panel access
 - `User` - For application panel access
@@ -183,16 +208,16 @@ Panels can be customized through their respective providers:
 - `app/Providers/Filament/AppPanelProvider.php`
 - `app/Providers/Filament/PublicPanelProvider.php`
 
-Alternatively, these settings are also consolidated in the `config/filakit.php` file for easier management.
+Alternatively, these settings are also consolidated in the `config/usprivacykit.php` file for easier management.
 
 ### Themes and Colors
 
 Each panel can have its own color scheme, which can be easily modified in the corresponding Provider files or in the
-`filakit.php` configuration file.
+`usprivacykit.php` configuration file.
 
 ### Configuration File
 
-The `config/filakit.php` file centralizes the configuration of the starter kit, including:
+The `config/usprivacykit.php` file centralizes the configuration of the starter kit, including:
 
 - Panel routes
 - Middleware for each panel
@@ -286,7 +311,7 @@ Reference
 
 ## Resources
 
-FilaKit includes support for:
+UsPrivacyKit includes support for:
 
 - User and admin management
 - Multi-guard authentication system

@@ -28,6 +28,13 @@ use JeffersonGoncalves\Filament\Admin\Pages\Auth\Login;
 use JeffersonGoncalves\Filament\Pwa\FilamentPwaPlugin;
 use JeffersonGoncalves\Filament\SecurityHeaders\SecurityHeadersPlugin;
 use JeffersonGoncalves\Filament\User\UserPlugin;
+use JeffersonGoncalves\Filament\UsPrivacy\UsPrivacyPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyAssessments\UsPrivacyAssessmentsPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyMinors\UsPrivacyMinorsPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyNotices\UsPrivacyNoticesPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyOptOut\UsPrivacyOptOutPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyRequests\UsPrivacyRequestsPlugin;
+use JeffersonGoncalves\Filament\UsPrivacyVendors\UsPrivacyVendorsPlugin;
 use JeffersonGoncalves\SecurityHeaders\Middleware\SecurityHeaders;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
@@ -45,10 +52,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(fn () => Vite::asset(config('filakit.logo')))
+            ->brandLogo(fn () => Vite::asset(config('usprivacykit.logo')))
             ->brandLogoHeight(fn () => request()->is('admin/login', 'admin/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->defaultThemeMode(config('filakit.theme_mode', ThemeMode::Dark))
+            ->defaultThemeMode(config('usprivacykit.theme_mode', ThemeMode::Dark))
             ->discoverClusters(in: app_path('Filament/Admin/Clusters'), for: 'App\\Filament\\Admin\\Clusters')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
@@ -78,12 +85,27 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 __('User'),
                 __('Management'),
+                __('US Privacy'),
                 __('Settings'),
             ])
             ->plugins([
                 SecurityHeadersPlugin::make()
                     ->navigationGroup(fn (): string => __('Settings')),
                 AdminPlugin::make(),
+                UsPrivacyPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyOptOutPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyRequestsPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyNoticesPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyAssessmentsPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyVendorsPlugin::make()
+                    ->navigationGroup('US Privacy'),
+                UsPrivacyMinorsPlugin::make()
+                    ->navigationGroup('US Privacy'),
                 UserPlugin::make(),
                 FilamentPwaPlugin::make(),
                 FilamentDeveloperLoginsPlugin::make()
